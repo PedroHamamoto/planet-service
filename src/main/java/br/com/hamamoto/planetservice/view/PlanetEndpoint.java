@@ -37,8 +37,8 @@ public class PlanetEndpoint {
     }
 
     @GetMapping
-    public ResponseEntity<List<PlanetResource>> getAll() {
-        List<Planet> planets = service.getAll();
+    public HttpEntity<List<PlanetResource>> getAll() {
+        List<Planet> planets = service.findAll();
 
         List<PlanetResource> planetResources =
                 planets.stream()
@@ -46,6 +46,13 @@ public class PlanetEndpoint {
                         .collect(Collectors.toList());
 
         return ResponseEntity.ok().body(planetResources);
+    }
+
+    @GetMapping("/{id}")
+    public HttpEntity<PlanetResource> getOne(@PathVariable("id") String id) {
+        Planet planet = service.findById(id);
+
+        return ResponseEntity.ok(converter.toResource(planet));
     }
 
 }

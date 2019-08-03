@@ -1,0 +1,8 @@
+{
+  "_id" : ObjectId("5c633aaa0db0365b7d0e000f"),
+  "name": "Bespin",
+  "climate": "temperate",
+  "terrain": "gas giant",
+  "appearances-quantity": 1,
+  "_class": "br.com.hamamoto.planetservice.domain.Planet"
+}

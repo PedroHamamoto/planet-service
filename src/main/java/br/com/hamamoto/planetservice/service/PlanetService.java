@@ -39,7 +39,11 @@ public class PlanetService {
         return repository.save(planet);
     }
 
-    public List<Planet> getAll() {
+    public List<Planet> findAll() {
         return repository.findAll();
+    }
+
+    public Planet findById(String id) {
+        return repository.findById(id).get();
     }
 }
