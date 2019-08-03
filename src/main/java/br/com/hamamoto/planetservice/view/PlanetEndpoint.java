@@ -5,14 +5,13 @@ import br.com.hamamoto.planetservice.infrastructure.converter.PlanetConverter;
 import br.com.hamamoto.planetservice.service.PlanetService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -35,6 +34,18 @@ public class PlanetEndpoint {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path(savedPlanet.getId()).build().toUri();
 
         return ResponseEntity.created(uri).body(converter.toResource(savedPlanet));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PlanetResource>> getAll() {
+        List<Planet> planets = service.getAll();
+
+        List<PlanetResource> planetResources =
+                planets.stream()
+                        .map(planet -> converter.toResource(planet))
+                        .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(planetResources);
     }
 
 }

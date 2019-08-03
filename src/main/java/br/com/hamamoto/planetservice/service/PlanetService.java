@@ -6,8 +6,11 @@ import br.com.hamamoto.planetservice.integration.SwapiPlanetGateway;
 import br.com.hamamoto.planetservice.integration.resource.SwapiPlanetResource;
 import br.com.hamamoto.planetservice.integration.resource.SwapiSearcResult;
 import br.com.hamamoto.planetservice.view.PlanetCreationRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,4 +39,7 @@ public class PlanetService {
         return repository.save(planet);
     }
 
+    public List<Planet> getAll() {
+        return repository.findAll();
+    }
 }

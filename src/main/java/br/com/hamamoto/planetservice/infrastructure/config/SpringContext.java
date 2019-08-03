@@ -1,6 +1,5 @@
 package br.com.hamamoto.planetservice.infrastructure.config;
 
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.modelmapper.ModelMapper;
@@ -19,7 +18,7 @@ public class SpringContext {
 
     @Bean
     public RestTemplate restTemplate() {
-       CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
         requestFactory.setHttpClient(httpClient);
 

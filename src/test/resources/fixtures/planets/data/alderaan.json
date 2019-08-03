@@ -1,0 +1,7 @@
+{
+  "name": "Alderaan",
+  "climate": "temperate",
+  "terrain": "grasslands, mountains",
+  "appearances-quantity": 2,
+  "_class": "br.com.hamamoto.planetservice.domain.Planet"
+}

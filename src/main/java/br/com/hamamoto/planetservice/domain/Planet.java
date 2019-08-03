@@ -3,7 +3,7 @@ package br.com.hamamoto.planetservice.domain;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document("planet")
+@Document("planets")
 public class Planet {
 
     private String id;

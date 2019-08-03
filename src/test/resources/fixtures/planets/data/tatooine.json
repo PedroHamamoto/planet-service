@@ -1,0 +1,7 @@
+{
+  "name": "Tatooine",
+  "climate": "arid",
+  "terrain": "desert",
+  "appearances-quantity": 5,
+  "_class": "br.com.hamamoto.planetservice.domain.Planet"
+}
