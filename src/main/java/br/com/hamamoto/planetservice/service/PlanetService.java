@@ -2,12 +2,12 @@ package br.com.hamamoto.planetservice.service;
 
 import br.com.hamamoto.planetservice.domain.Planet;
 import br.com.hamamoto.planetservice.infrastructure.converter.PlanetConverter;
+import br.com.hamamoto.planetservice.infrastructure.exception.domain.ApplicationException;
+import br.com.hamamoto.planetservice.infrastructure.exception.domain.Message;
 import br.com.hamamoto.planetservice.integration.SwapiPlanetGateway;
 import br.com.hamamoto.planetservice.integration.resource.SwapiPlanetResource;
 import br.com.hamamoto.planetservice.integration.resource.SwapiSearcResult;
 import br.com.hamamoto.planetservice.view.PlanetCreationRequest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,6 +44,6 @@ public class PlanetService {
     }
 
     public Planet findById(String id) {
-        return repository.findById(id).get();
+        return repository.findById(id).orElseThrow(() -> new ApplicationException(Message.PLANET_NOT_FOUND));
     }
 }

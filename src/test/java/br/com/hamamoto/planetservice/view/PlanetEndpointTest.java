@@ -88,4 +88,16 @@ public class PlanetEndpointTest extends BaseTest {
             .body("terrain", is("gas giant"))
             .body("appearances-quantity", is(1));
     }
+
+    @Test
+    public void shouldReturnNotFoundWhenPlanetDoesNotExist() {
+        given()
+            .log().everything()
+            .headers(ACCEPT, APPLICATION_JSON_VALUE)
+        .when()
+            .get(address() + "planets/5c633aaa0db0365b7d0e000f")
+        .then().log().everything()
+            .assertThat()
+            .statusCode(SC_NOT_FOUND);
+    }
 }
