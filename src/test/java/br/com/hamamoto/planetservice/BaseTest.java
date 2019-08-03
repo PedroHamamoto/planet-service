@@ -57,4 +57,8 @@ public abstract class BaseTest {
     public void insertPlanet(String path) throws IOException {
         mongoTemplate.insert(Document.parse(resource(path)), "planets");
     }
+
+    public Planet findById(String id) {
+        return mongoTemplate.findById(id, Planet.class);
+    }
 }

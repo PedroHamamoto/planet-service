@@ -55,4 +55,13 @@ public class PlanetEndpoint {
         return ResponseEntity.ok(converter.toResource(planet));
     }
 
+    @PutMapping("/{id}")
+    public HttpEntity update(@PathVariable("id") String id, @RequestBody PlanetUpdateRequest request) {
+        request.setId(id);
+
+        service.update(request);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

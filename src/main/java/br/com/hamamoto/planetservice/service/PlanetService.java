@@ -8,6 +8,7 @@ import br.com.hamamoto.planetservice.integration.SwapiPlanetGateway;
 import br.com.hamamoto.planetservice.integration.resource.SwapiPlanetResource;
 import br.com.hamamoto.planetservice.integration.resource.SwapiSearcResult;
 import br.com.hamamoto.planetservice.view.PlanetCreationRequest;
+import br.com.hamamoto.planetservice.view.PlanetUpdateRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,5 +46,14 @@ public class PlanetService {
 
     public Planet findById(String id) {
         return repository.findById(id).orElseThrow(() -> new ApplicationException(Message.PLANET_NOT_FOUND));
+    }
+
+    public void update(PlanetUpdateRequest request) {
+        findById(request.getId());
+
+        Planet planet = converter.toEntity(request);
+
+        repository.save(planet);
+
     }
 }
