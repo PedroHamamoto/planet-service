@@ -64,4 +64,11 @@ public class PlanetEndpoint {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/{id}")
+    public HttpEntity delete(@PathVariable("id") String id) {
+        service.delete(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

@@ -12,6 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.springframework.http.HttpHeaders.ACCEPT;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -124,5 +125,22 @@ public class PlanetEndpointTest extends BaseTest {
         assertThat(planet.getClimate(), is("temperate, arid"));
         assertThat(planet.getTerrain(), is("rock, desert, mountain, barren"));
         assertThat(planet.getAppearancesQuantity(), is(1));
+    }
+
+    @Test
+    public void shouldDeletePlanet() throws IOException {
+        insertPlanet("fixtures/planets/data/bespin.json");
+
+        given()
+            .log().everything()
+        .when()
+            .delete(address() + "planets/5c633aaa0db0365b7d0e000f")
+        .then().log().everything()
+            .assertThat()
+            .statusCode(SC_NO_CONTENT);
+
+        Planet planet = findById("5c633aaa0db0365b7d0e000f");
+
+        assertThat(planet, is(nullValue()));
     }
 }

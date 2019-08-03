@@ -56,4 +56,10 @@ public class PlanetService {
         repository.save(planet);
 
     }
+
+    public void delete(String id) {
+        Planet planet = findById(id);
+
+        repository.delete(planet);
+    }
 }
