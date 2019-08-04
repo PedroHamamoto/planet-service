@@ -1,4 +1,4 @@
-package br.com.hamamoto.planetservice.view;
+package br.com.hamamoto.planetservice.view.resource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

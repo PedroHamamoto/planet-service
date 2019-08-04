@@ -1,4 +1,4 @@
-package br.com.hamamoto.planetservice.service;
+package br.com.hamamoto.planetservice.repository;
 
 import br.com.hamamoto.planetservice.domain.Planet;
 import org.springframework.data.mongodb.repository.MongoRepository;

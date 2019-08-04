@@ -2,9 +2,9 @@ package br.com.hamamoto.planetservice.infrastructure.converter;
 
 import br.com.hamamoto.planetservice.domain.Planet;
 import br.com.hamamoto.planetservice.integration.resource.SwapiPlanetResource;
-import br.com.hamamoto.planetservice.view.PlanetCreationRequest;
-import br.com.hamamoto.planetservice.view.PlanetResource;
-import br.com.hamamoto.planetservice.view.PlanetUpdateRequest;
+import br.com.hamamoto.planetservice.view.resource.PlanetCreationRequest;
+import br.com.hamamoto.planetservice.view.resource.PlanetResource;
+import br.com.hamamoto.planetservice.view.resource.PlanetUpdateRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

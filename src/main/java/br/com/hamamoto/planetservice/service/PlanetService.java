@@ -7,8 +7,9 @@ import br.com.hamamoto.planetservice.infrastructure.exception.domain.Message;
 import br.com.hamamoto.planetservice.integration.SwapiPlanetGateway;
 import br.com.hamamoto.planetservice.integration.resource.SwapiPlanetResource;
 import br.com.hamamoto.planetservice.integration.resource.SwapiSearcResult;
-import br.com.hamamoto.planetservice.view.PlanetCreationRequest;
-import br.com.hamamoto.planetservice.view.PlanetUpdateRequest;
+import br.com.hamamoto.planetservice.repository.PlanetRepository;
+import br.com.hamamoto.planetservice.view.resource.PlanetCreationRequest;
+import br.com.hamamoto.planetservice.view.resource.PlanetUpdateRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
