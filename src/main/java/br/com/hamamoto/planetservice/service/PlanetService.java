@@ -62,4 +62,8 @@ public class PlanetService {
 
         repository.delete(planet);
     }
+
+    public Planet findByName(String name) {
+        return repository.findByName(name).orElseThrow(() -> new ApplicationException(Message.PLANET_NOT_FOUND));
+    }
 }

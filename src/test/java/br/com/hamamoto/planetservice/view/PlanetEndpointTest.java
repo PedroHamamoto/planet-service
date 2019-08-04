@@ -74,7 +74,7 @@ public class PlanetEndpointTest extends BaseTest {
     }
 
     @Test
-    public void shouldGeASinglePlanet() throws IOException {
+    public void shouldGeASinglePlanetById() throws IOException {
         insertPlanet("fixtures/planets/data/bespin.json");
 
         given()
@@ -82,6 +82,25 @@ public class PlanetEndpointTest extends BaseTest {
             .headers(ACCEPT, APPLICATION_JSON_VALUE)
         .when()
             .get(address() + "planets/5c633aaa0db0365b7d0e000f")
+        .then().log().everything()
+            .assertThat()
+            .statusCode(SC_OK)
+            .body("id", is("5c633aaa0db0365b7d0e000f"))
+            .body("name", is("Bespin"))
+            .body("climate", is("temperate"))
+            .body("terrain", is("gas giant"))
+            .body("appearances-quantity", is(1));
+    }
+
+    @Test
+    public void shouldGetASinglePlanetByName() throws IOException {
+        insertPlanet("fixtures/planets/data/bespin.json");
+
+        given()
+            .log().everything()
+            .headers(ACCEPT, APPLICATION_JSON_VALUE)
+        .when()
+            .get(address() + "planets/;name=Bespin")
         .then().log().everything()
             .assertThat()
             .statusCode(SC_OK)

@@ -2,7 +2,10 @@ package br.com.hamamoto.planetservice.view;
 
 import br.com.hamamoto.planetservice.domain.Planet;
 import br.com.hamamoto.planetservice.infrastructure.converter.PlanetConverter;
+import br.com.hamamoto.planetservice.infrastructure.exception.domain.ApplicationException;
+import br.com.hamamoto.planetservice.infrastructure.exception.domain.Message;
 import br.com.hamamoto.planetservice.service.PlanetService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,17 +43,22 @@ public class PlanetEndpoint {
     public HttpEntity<List<PlanetResource>> getAll() {
         List<Planet> planets = service.findAll();
 
-        List<PlanetResource> planetResources =
-                planets.stream()
-                        .map(planet -> converter.toResource(planet))
-                        .collect(Collectors.toList());
+        List<PlanetResource> planetResources = toResourceList(planets);
 
         return ResponseEntity.ok().body(planetResources);
     }
 
     @GetMapping("/{id}")
-    public HttpEntity<PlanetResource> getOne(@PathVariable("id") String id) {
-        Planet planet = service.findById(id);
+    public HttpEntity<PlanetResource> getOne(@PathVariable(value = "id", required = false) String id, @MatrixVariable(value = "name", required = false) String name) {
+        Planet planet = new Planet();
+
+        if (StringUtils.isNotBlank(name)) {
+            planet = service.findByName(name);
+        } else if (StringUtils.isNotBlank(id)) {
+            planet = service.findById(id);
+        } else {
+            throw new ApplicationException(Message.PLANET_NOT_FOUND);
+        }
 
         return ResponseEntity.ok(converter.toResource(planet));
     }
@@ -71,4 +79,9 @@ public class PlanetEndpoint {
         return ResponseEntity.noContent().build();
     }
 
+    private List<PlanetResource> toResourceList(List<Planet> planets) {
+        return planets.stream()
+                .map(planet -> converter.toResource(planet))
+                .collect(Collectors.toList());
+    }
 }
