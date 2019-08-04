@@ -40,8 +40,9 @@ public class PlanetEndpoint {
     }
 
     @GetMapping
-    public HttpEntity<List<PlanetResource>> getAll() {
-        List<Planet> planets = service.findAll();
+    public HttpEntity<List<PlanetResource>> getAll(
+            @RequestHeader(value = "origin", defaultValue = "database") String origin) {
+        List<Planet> planets = service.findAll(origin);
 
         List<PlanetResource> planetResources = toResourceList(planets);
 
@@ -49,7 +50,8 @@ public class PlanetEndpoint {
     }
 
     @GetMapping("/{id}")
-    public HttpEntity<PlanetResource> getOne(@PathVariable(value = "id", required = false) String id, @MatrixVariable(value = "name", required = false) String name) {
+    public HttpEntity<PlanetResource> getOne(@PathVariable(value = "id", required = false) String id,
+                                             @MatrixVariable(value = "name", required = false) String name) {
         Planet planet = new Planet();
 
         if (StringUtils.isNotBlank(name)) {

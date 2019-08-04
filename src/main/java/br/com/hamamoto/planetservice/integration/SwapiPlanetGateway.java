@@ -1,5 +1,6 @@
 package br.com.hamamoto.planetservice.integration;
 
+import br.com.hamamoto.planetservice.domain.Planet;
 import br.com.hamamoto.planetservice.integration.resource.SwapiPlanetResource;
 import br.com.hamamoto.planetservice.integration.resource.SwapiSearcResult;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,12 +9,17 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.http.HttpMethod.GET;
 
 @Component
 public class SwapiPlanetGateway {
 
     public static final String PLANETS_SEARCH_NAME = "/planets?search=%s";
+    public static final String ALL_PLANETS = "planets";
+
     public static final HttpEntity<?> EMPTY_BODY = null;
     private final RestTemplate template;
     private final String swapiUrl;
@@ -26,15 +32,30 @@ public class SwapiPlanetGateway {
     public SwapiSearcResult<SwapiPlanetResource> findPlanetsByName(String name) {
         String url = String.format(swapiUrl + PLANETS_SEARCH_NAME, name);
 
-        ResponseEntity<SwapiSearcResult<SwapiPlanetResource>> response = template.exchange(url,
+        ResponseEntity<SwapiSearcResult<SwapiPlanetResource>> response = getSwapiSearchResource(url);
+
+        return response.getBody();
+    }
+
+    public List<SwapiPlanetResource> findAll() {
+        String url = swapiUrl + ALL_PLANETS;
+        ArrayList<SwapiPlanetResource> swapiPlanetResources = new ArrayList<>();
+
+        do {
+            ResponseEntity<SwapiSearcResult<SwapiPlanetResource>> response = getSwapiSearchResource(url);
+            swapiPlanetResources.addAll(response.getBody().getResults());
+
+            url = response.getBody().getNext();
+        } while(url != null);
+
+        return swapiPlanetResources;
+    }
+
+    private ResponseEntity<SwapiSearcResult<SwapiPlanetResource>> getSwapiSearchResource(String url) {
+        return template.exchange(url,
                 GET,
                 EMPTY_BODY,
                 new ParameterizedTypeReference<SwapiSearcResult<SwapiPlanetResource>>() {
                 });
-
-        return response.getBody();
-
-
     }
-
 }

@@ -22,7 +22,7 @@ public class PlanetEndpointTest extends BaseTest {
 
     @Test
     public void shouldCreateAPlanet() throws Exception {
-        stubFor(get(urlEqualTo("/planets?search=Tatooine"))
+        stubFor(get(urlEqualTo("/api/planets?search=Tatooine"))
             .willReturn(aResponse()
                 .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .withStatus(SC_OK)
@@ -71,6 +71,32 @@ public class PlanetEndpointTest extends BaseTest {
             .assertThat()
             .statusCode(SC_OK)
             .body("$", hasSize(2));
+    }
+
+    @Test
+    public void shouldGetAllPlanetsFromSwapi() {
+        stubFor(get(urlEqualTo("/api/planets"))
+            .willReturn(aResponse()
+                .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                .withStatus(SC_OK)
+                .withBodyFile("swapi/planets/responses/all-planets-page-1.json")));
+
+        stubFor(get(urlEqualTo("/api/planets/?page=2"))
+            .willReturn(aResponse()
+                .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                .withStatus(SC_OK)
+                .withBodyFile("swapi/planets/responses/all-planets-page-2.json")));
+
+        given()
+            .log().everything()
+            .headers(ACCEPT, APPLICATION_JSON_VALUE)
+            .headers("origin", "swapi")
+        .when()
+            .get(address() + "planets")
+        .then().log().everything()
+            .assertThat()
+            .statusCode(SC_OK)
+            .body("$", hasSize(20));
     }
 
     @Test

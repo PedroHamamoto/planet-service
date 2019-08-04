@@ -4,6 +4,8 @@ import org.springframework.http.HttpStatus;
 
 public enum Message {
 
+    UNKNOWN_ORIGIN("Origin should be 'database' or 'swapi' ", HttpStatus.BAD_REQUEST, 400001),
+
     PLANET_NOT_FOUND("Planet not found", HttpStatus.NOT_FOUND, 404001);
 
     private final HttpStatus status;
@@ -27,4 +29,5 @@ public enum Message {
     public int getCode() {
         return code;
     }
+
 }

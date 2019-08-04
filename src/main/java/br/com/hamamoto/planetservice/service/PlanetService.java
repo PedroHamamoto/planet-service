@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PlanetService {
@@ -40,8 +41,16 @@ public class PlanetService {
         return repository.save(planet);
     }
 
-    public List<Planet> findAll() {
-        return repository.findAll();
+    public List<Planet> findAll(String origin) {
+        if ("database".equals(origin)) {
+            return repository.findAll();
+        } else if ("swapi".equals(origin)) {
+            return gateway.findAll().stream()
+                .map(planet -> converter.toEntity(planet))
+                .collect(Collectors.toList());
+        }
+
+        throw new ApplicationException(Message.UNKNOWN_ORIGIN);
     }
 
     public Planet findById(String id) {

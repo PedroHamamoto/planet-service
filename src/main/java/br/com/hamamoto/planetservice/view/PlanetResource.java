@@ -1,7 +1,9 @@
 package br.com.hamamoto.planetservice.view;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class PlanetResource {
 
     private String id;
@@ -10,7 +12,7 @@ public class PlanetResource {
     private String terrain;
 
     @JsonProperty("appearances-quantity")
-    private int appearancesQuantity;
+    private Integer appearancesQuantity;
 
     public String getId() {
         return id;
@@ -44,11 +46,11 @@ public class PlanetResource {
         this.terrain = terrain;
     }
 
-    public int getAppearancesQuantity() {
+    public Integer getAppearancesQuantity() {
         return appearancesQuantity;
     }
 
-    public void setAppearancesQuantity(int appearancesQuantity) {
+    public void setAppearancesQuantity(Integer appearancesQuantity) {
         this.appearancesQuantity = appearancesQuantity;
     }
 }
