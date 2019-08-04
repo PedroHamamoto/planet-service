@@ -4,6 +4,7 @@ import br.com.hamamoto.planetservice.domain.Planet;
 import br.com.hamamoto.planetservice.integration.resource.SwapiPlanetResource;
 import br.com.hamamoto.planetservice.integration.resource.SwapiSearcResult;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -37,6 +38,7 @@ public class SwapiPlanetGateway {
         return response.getBody();
     }
 
+    @Cacheable("planets")
     public List<SwapiPlanetResource> findAll() {
         String url = swapiUrl + ALL_PLANETS;
         ArrayList<SwapiPlanetResource> swapiPlanetResources = new ArrayList<>();

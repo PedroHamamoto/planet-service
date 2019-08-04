@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class ExceptionControllerAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public HttpEntity handleException(MethodArgumentNotValidException ex) {
+    public HttpEntity<Map<String, Object>> handleException(MethodArgumentNotValidException ex) {
         Map<String, Object> body = new LinkedHashMap<>();
 
         List<String> errors = ex.getBindingResult()
@@ -33,8 +33,8 @@ public class ExceptionControllerAdvice {
     }
 
     @ExceptionHandler(ApplicationException.class)
-    public ResponseEntity handleException(ApplicationException e) {
+    public ResponseEntity<ErrorResource> handleException(ApplicationException e) {
         ErrorResource errorResource = new ErrorResource(e.getCode(), e.getMessage());
-        return new ResponseEntity(errorResource, e.getStatus());
+        return new ResponseEntity<>(errorResource, e.getStatus());
     }
 }
