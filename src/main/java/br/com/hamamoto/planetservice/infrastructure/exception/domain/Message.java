@@ -5,8 +5,11 @@ import org.springframework.http.HttpStatus;
 public enum Message {
 
     UNKNOWN_ORIGIN("Origin should be 'database' or 'swapi' ", HttpStatus.BAD_REQUEST, 400001),
+    NOT_A_STAR_WARS_PLANET("It's not a Star Wars planet' ", HttpStatus.BAD_REQUEST, 400002),
 
-    PLANET_NOT_FOUND("Planet not found", HttpStatus.NOT_FOUND, 404001);
+    PLANET_NOT_FOUND("Planet not found", HttpStatus.NOT_FOUND, 404001),
+
+    PLANET_ALREADY_REGISTERED("Planet already registered", HttpStatus.CONFLICT, 409001);
 
     private final HttpStatus status;
     private final String message;

@@ -30,15 +30,25 @@ public class PlanetService {
 
     public Planet create(PlanetCreationRequest request) {
         Planet planet = converter.toEntity(request);
+
+        validateConflict(request);
+
         SwapiSearcResult<SwapiPlanetResource> planets = gateway.findPlanetsByName(request.getName());
 
         Optional<SwapiPlanetResource> first =
-                planets.getResults().stream()
-                        .filter(swapiPlanet -> swapiPlanet.getName().equals(request.getName())).findFirst();
+            planets.getResults().stream()
+                .filter(swapiPlanet -> swapiPlanet.getName().equals(request.getName())).findFirst();
+
+        first.orElseThrow(() -> new ApplicationException(Message.NOT_A_STAR_WARS_PLANET));
 
         planet.setAppearancesQuantity(first.get().getFilms().size());
 
         return repository.save(planet);
+    }
+
+    private void validateConflict(PlanetCreationRequest request) {
+        Optional<Planet> planet = repository.findByName(request.getName());
+        planet.ifPresent(p -> {throw new ApplicationException(Message.PLANET_ALREADY_REGISTERED);});
     }
 
     public List<Planet> findAll(String origin) {

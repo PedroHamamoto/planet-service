@@ -188,4 +188,38 @@ public class PlanetEndpointTest extends BaseTest {
 
         assertThat(planet, is(nullValue()));
     }
+
+    @Test
+    public void shouldReturnConflictWhenPlanetIsRegistered() throws IOException {
+        insertPlanet("fixtures/planets/data/tatooine.json");
+
+        given()
+            .log().everything()
+            .body(resource("fixtures/planets/requests/new-planet.json"))
+            .headers(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+        .when()
+            .post(address() + "planets")
+        .then().log().everything()
+            .assertThat()
+            .statusCode(SC_CONFLICT);
+    }
+
+    @Test
+    public void shouldReturnBadRequestWhenItsNotAStarWarsPlanet() throws IOException {
+        stubFor(get(urlEqualTo("/api/planets?search=Namekuzen"))
+            .willReturn(aResponse()
+                .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                .withStatus(SC_OK)
+                .withBodyFile("swapi/planets/responses/not-found-planet-search.json")));
+
+        given()
+            .log().everything()
+            .body(resource("fixtures/planets/requests/invalid-new-planet.json"))
+            .headers(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+        .when()
+            .post(address() + "planets")
+        .then().log().everything()
+            .assertThat()
+            .statusCode(SC_BAD_REQUEST);
+    }
 }
