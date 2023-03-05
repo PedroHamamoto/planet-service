@@ -1,7 +1,7 @@
 {
   "count": 20,
   "next": null,
-  "previous": "https//localhost:9195/api/planets/?page=1",
+  "previous": "https//localhost:${port}/api/planets/?page=1",
   "results": [
     {
       "name": "Utapau",

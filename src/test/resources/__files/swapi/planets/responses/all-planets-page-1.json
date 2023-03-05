@@ -1,6 +1,6 @@
 {
   "count": 20,
-  "next": "http://localhost:9195/api/planets/?page=2",
+  "next": "http://localhost:${port}/api/planets/?page=2",
   "previous": null,
   "results": [
     {

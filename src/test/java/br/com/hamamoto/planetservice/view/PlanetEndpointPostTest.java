@@ -26,7 +26,7 @@ public class PlanetEndpointPostTest extends BaseTest {
 
         given()
             .log().everything()
-            .body(resource("fixtures/planets/requests/new-planet.json"))
+            .body(getResouceAsString("fixtures/planets/requests/new-planet.json"))
             .headers(CONTENT_TYPE, APPLICATION_JSON_VALUE)
         .when()
             .post(address() + "planets")
@@ -44,7 +44,7 @@ public class PlanetEndpointPostTest extends BaseTest {
     public void shouldReturnBadRequestWhenParametersAreEmpty()throws Exception {
         given()
             .log().everything()
-            .body(resource("fixtures/planets/requests/invalid-planet.json"))
+            .body(getResouceAsString("fixtures/planets/requests/invalid-planet.json"))
             .headers(CONTENT_TYPE, APPLICATION_JSON_VALUE)
         .when()
             .post(address() + "planets")
@@ -59,7 +59,7 @@ public class PlanetEndpointPostTest extends BaseTest {
 
         given()
             .log().everything()
-            .body(resource("fixtures/planets/requests/new-planet.json"))
+            .body(getResouceAsString("fixtures/planets/requests/new-planet.json"))
             .headers(CONTENT_TYPE, APPLICATION_JSON_VALUE)
         .when()
             .post(address() + "planets")
@@ -78,7 +78,7 @@ public class PlanetEndpointPostTest extends BaseTest {
 
         given()
             .log().everything()
-            .body(resource("fixtures/planets/requests/invalid-new-planet.json"))
+            .body(getResouceAsString("fixtures/planets/requests/invalid-new-planet.json"))
             .headers(CONTENT_TYPE, APPLICATION_JSON_VALUE)
         .when()
             .post(address() + "planets")

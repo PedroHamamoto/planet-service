@@ -1,9 +1,7 @@
 package br.com.hamamoto.planetservice;
 
 import br.com.hamamoto.planetservice.domain.Planet;
-import org.bson.BSON;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 import org.junit.After;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -23,7 +22,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-@AutoConfigureWireMock(port = 9195)
+@AutoConfigureWireMock(port = 0)
 @ActiveProfiles("test")
 public abstract class BaseTest {
 
@@ -44,18 +43,22 @@ public abstract class BaseTest {
         return String.format("http://localhost:%d/rs/", port);
     }
 
-    public String resource(String path) throws IOException {
+    public String getResouceAsString(String path)  {
         File file = new File(RESOURCE_DIRECTORY + path);
 
         if (!file.exists()) {
             throw new IllegalArgumentException("Payload file not found: " + RESOURCE_DIRECTORY + path);
         }
 
-        return new String(Files.readAllBytes(Paths.get(file.getPath())));
+        try {
+            return new String(Files.readAllBytes(Paths.get(file.getPath())));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     public void insertPlanet(String path) throws IOException {
-        mongoTemplate.insert(Document.parse(resource(path)), "planets");
+        mongoTemplate.insert(Document.parse(getResouceAsString(path)), "planets");
     }
 
     public Planet findById(String id) {

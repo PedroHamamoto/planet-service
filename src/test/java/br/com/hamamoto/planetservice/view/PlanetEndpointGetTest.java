@@ -2,6 +2,7 @@ package br.com.hamamoto.planetservice.view;
 
 import br.com.hamamoto.planetservice.BaseTest;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.IOException;
 
@@ -17,6 +18,10 @@ import static wiremock.org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static wiremock.org.apache.http.HttpStatus.SC_OK;
 
 public class PlanetEndpointGetTest extends BaseTest {
+
+    public static final String PORT = "${port}";
+    @Value("${wiremock.server.port}")
+    private CharSequence wiremockPort;
 
     @Test
     public void shouldGetAllPlanetsFromDatabase() throws IOException {
@@ -40,13 +45,20 @@ public class PlanetEndpointGetTest extends BaseTest {
             .willReturn(aResponse()
                 .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .withStatus(SC_OK)
-                .withBodyFile("swapi/planets/responses/all-planets-page-1.json")));
+                .withBody(getResouceAsString("__files/swapi/planets/responses/all-planets-page-1.json")
+                        .replace(PORT, wiremockPort)
+                )
+            )
+        );
 
         stubFor(get(urlEqualTo("/api/planets/?page=2"))
             .willReturn(aResponse()
                 .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .withStatus(SC_OK)
-                .withBodyFile("swapi/planets/responses/all-planets-page-2.json")));
+                .withBody(getResouceAsString("__files/swapi/planets/responses/all-planets-page-2.json")
+                        .replace(PORT, wiremockPort))
+            )
+        );
 
         given()
             .log().everything()

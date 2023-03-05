@@ -21,7 +21,7 @@ public class PlanetEndpointPutTest extends BaseTest {
 
         given()
             .log().everything()
-            .body(resource("fixtures/planets/requests/update-planet.json"))
+            .body(getResouceAsString("fixtures/planets/requests/update-planet.json"))
             .headers(CONTENT_TYPE, APPLICATION_JSON_VALUE)
         .when()
             .put(address() + "planets/5c633aaa0db0365b7d0e000f")
